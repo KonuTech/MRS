@@ -1,2 +1,0 @@
-DROP VIEW IF EXISTS CrewMovieIdCount;
-CREATE VIEW CrewMovieIdCount AS SELECT DISTINCT "Movie.Id", COUNT("Movie.Id") as MovieIdCount FROM CrewDistinct GROUP BY "Movie.id" ORDER BY MovieIdCount DESC;
