@@ -1,2 +1,0 @@
-DROP VIEW IF EXISTS ProductioncountriesImdbIdCount;
-CREATE VIEW ProductioncountriesImdbIdCount AS SELECT DISTINCT imdb_id, COUNT(imdb_id) as imdb_idCount FROM ProductioncountriesDistinct GROUP BY imdb_id ORDER BY imdb_idCount DESC;
