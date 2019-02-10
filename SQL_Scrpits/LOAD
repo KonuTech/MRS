@@ -1,0 +1,55 @@
+DROP VIEW IF EXISTS MoviesDistinct;
+CREATE VIEW MoviesDistinct AS ;
+DROP VIEW IF EXISTS ProductioncountriesDistinct;
+CREATE VIEW ProductioncountriesDistinct AS SELECT DISTINCT * FROM productioncountries WHERE imdb_id NOT NULL;
+DROP VIEW IF EXISTS GenresDistinct;
+CREATE VIEW GenresDistinct AS SELECT DISTINCT * FROM genres WHERE imdb_id <> '';
+DROP VIEW IF EXISTS OverviewDistinct;
+CREATE VIEW OverviewDistinct AS SELECT DISTINCT * FROM overview WHERE imdb_id <> '' AND overview <> '';
+DROP VIEW IF EXISTS CastDistinct;
+CREATE VIEW CastDistinct AS SELECT DISTINCT * FROM "cast" WHERE "Movie.id" <> '';
+DROP VIEW IF EXISTS CastLeadActor;
+CREATE VIEW CastLeadActor AS SELECT id, name, "Movie.id" FROM CastDistinct WHERE "Movie.order" = 0;
+DROP VIEW IF EXISTS CastSecondActor;
+CREATE VIEW CastSecondActor AS SELECT id, name, "Movie.id" FROM CastDistinct WHERE "Movie.order" = 1;
+DROP VIEW IF EXISTS CastThirdActor;
+CREATE VIEW CastThirdActor AS SELECT id, name, "Movie.id" FROM CastDistinct WHERE "Movie.order" = 2;
+DROP VIEW IF EXISTS CrewDistinct;
+CREATE VIEW CrewDistinct AS SELECT DISTINCT * FROM crew WHERE "Movie.id" <> '';
+DROP VIEW IF EXISTS Director;
+CREATE VIEW Director AS SELECT DISTINCT * FROM CrewDistinct WHERE job in ('Director') AND "Movie.id" <> '' ORDER BY name;
+DROP VIEW IF EXISTS KeywordsDistinct;
+CREATE VIEW KeywordsDistinct AS SELECT DISTINCT * FROM keywords WHERE id <> '' and keywords <> '';
+DROP VIEW IF EXISTS ScreenwriterMoviesNo;
+CREATE VIEW ScreenwriterMoviesNo AS SELECT DISTINCT id, name, COUNT("Movie.id") AS WrittenMoviesTotal  FROM CrewDistinct WHERE job in ('Screenplay') AND "Movie.id" <> '' GROUP BY id, name ORDER BY WrittenMoviesTotal DESC;
+DROP VIEW IF EXISTS Screenwriter;
+CREATE VIEW Screenwriter AS SELECT DISTINCT id, name, "Movie.id", (SELECT WrittenMoviesTotal FROM ScreenwriterMoviesNo WHERE ScreenwriterMoviesNo.id = CrewDistinct.id) AS WrittenMoviesTotal FROM CrewDistinct WHERE job in ('Director') AND "Movie.id" <> '' ORDER BY WrittenMoviesTotal DESC, name, "Movie.id";
+
+
+DROP VIEW IF EXISTS Percentile;
+CREATE VIEW Percentile AS SELECT vote_count FROM (SELECT DISTINCT * FROM MOVIES WHERE imdb_id <> '') ORDER BY vote_count ASC LIMIT 1 OFFSET (SELECT COUNT(*) FROM (SELECT DISTINCT * FROM MOVIES WHERE imdb_id <> '')) * 90 / 100 - 1;
+DROP VIEW IF EXISTS MoviesDistinctSubset;
+CREATE VIEW MoviesDistinctSubset AS ;
+DROP VIEW IF EXISTS VoteAvarageGlobal;
+CREATE VIEW VoteAvarageGlobal AS 
+DROP VIEW IF EXISTS Score;
+CREATE VIEW Score AS SELECT
+id,
+imdb_id,
+title,
+vote_count,
+vote_average,
+(vote_count / (vote_count + MinimumVotes) * vote_average) + (MinimumVotes / (vote_count + MinimumVotes * VoteAvarageGlobal)) AS Score
+FROM
+(SELECT
+id,
+imdb_id,
+title,
+vote_count,
+250.0 as MinimumVotes,
+vote_average,
+(SELECT VoteAvarageGlobal FROM VoteAvarageGlobal) AS VoteAvarageGlobal
+FROM MoviesDistinctSubset)
+as ParametersForScore
+ORDER BY Score DESC
+;

@@ -1,0 +1,20 @@
+DROP VIEW IF EXISTS CrewCount;
+CREATE VIEW CrewCount AS 
+SELECT DISTINCT imdb_id,
+budget,
+title,
+popularity,
+release_date,
+revenue,
+runtime,
+vote_average,
+vote_count,
+"Movie.id",
+COUNT(c.id) AS crew_counted
+FROM crew as c
+INNER JOIN (SELECT DISTINCT * FROM movies WHERE imdb_id NOT IN ('','1942-07-20','2005-05-10','2009-08-20','2009-10-23')) as m
+on c."Movie.id" = m.id
+WHERE "Movie.id" IS NOT NULL
+GROUP BY "Movie.id"
+ORDER BY crew_counted desc
+;

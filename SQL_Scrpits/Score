@@ -1,0 +1,21 @@
+DROP VIEW IF EXISTS Score;
+CREATE VIEW Score AS SELECT
+id,
+imdb_id,
+title,
+vote_count,
+vote_average,
+(vote_count / (vote_count + MinimumVotes) * vote_average) + (MinimumVotes / (vote_count + MinimumVotes * VoteAvarageGlobal)) AS Score
+FROM
+(SELECT
+id,
+imdb_id,
+title,
+vote_count,
+250.0 as MinimumVotes,
+vote_average,
+(SELECT VoteAvarageGlobal FROM VoteAvarageGlobal) AS VoteAvarageGlobal
+FROM MoviesDistinctSubset)
+as ParametersForScore
+ORDER BY Score DESC
+;

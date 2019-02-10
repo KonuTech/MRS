@@ -1,0 +1,2 @@
+DROP VIEW IF EXISTS MoviesDistinct;
+CREATE VIEW MoviesDistinct AS SELECT DISTINCT * FROM MOVIES WHERE imdb_id <> '';

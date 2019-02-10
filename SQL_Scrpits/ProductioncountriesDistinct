@@ -1,0 +1,2 @@
+DROP VIEW IF EXISTS ProductioncountriesDistinct;
+CREATE VIEW ProductioncountriesDistinct AS SELECT DISTINCT * FROM productioncountries WHERE imdb_id NOT NULL;
