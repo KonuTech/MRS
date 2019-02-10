@@ -1,2 +1,0 @@
-DROP VIEW IF EXISTS KeywordsDistinct;
-CREATE VIEW KeywordsDistinct AS SELECT DISTINCT * FROM keywords WHERE id <> '' and keywords <> '';
