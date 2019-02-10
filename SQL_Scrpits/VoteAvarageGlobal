@@ -1,2 +1,0 @@
-DROP VIEW IF EXISTS VoteAvarageGlobal;
-CREATE VIEW VoteAvarageGlobal AS SELECT AVG(vote_average) as VoteAvarageGlobal FROM MoviesDistinct;
