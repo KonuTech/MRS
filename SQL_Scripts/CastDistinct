@@ -1,0 +1,2 @@
+DROP VIEW IF EXISTS CastDistinct;
+CREATE VIEW CastDistinct AS SELECT DISTINCT * FROM "cast" WHERE "Movie.id" <> '';

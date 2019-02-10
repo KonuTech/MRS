@@ -1,0 +1,2 @@
+DROP VIEW IF EXISTS CastMovieIdCount;
+CREATE VIEW CastMovieIdCount AS SELECT DISTINCT "Movie.Id", COUNT("Movie.Id") as MovieIdCount FROM CastDistinct GROUP BY "Movie.id" ORDER BY MovieIdCount DESC;

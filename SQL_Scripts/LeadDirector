@@ -1,0 +1,45 @@
+DROP VIEW IF EXISTS LeadDirector;
+CREATE VIEW LeadDirector AS
+SELECT DISTINCT
+Directors."Movie.id",
+MIN(Directors.name) AS DirectorName,
+Directors.DirectedMoviesTotal
+
+FROM
+(
+SELECT DISTINCT
+"Movie.id",
+name,
+DirectedMoviesTotal
+FROM
+(
+SELECT * FROM CrewDistinct WHERE job in ('Director') AND "Movie.id" <> ''
+) as CrewTable
+LEFT JOIN
+(
+SELECT id AS PersonId, COUNT("Movie.id") AS DirectedMoviesTotal FROM CrewDistinct WHERE job in ('Director') AND "Movie.id" <> '' GROUP BY id
+) AS DirectedTotal
+ON CrewTable.id = DirectedTotal.PersonId
+) AS Directors
+
+LEFT JOIN 
+(
+SELECT DISTINCT
+"Movie.id",
+MAX(DirectedTotal.DirectedMoviesTotal) as DirectorWithMostM
+FROM
+(
+SELECT * FROM CrewDistinct WHERE job in ('Director') AND "Movie.id" <> ''
+) as CrewTable
+LEFT JOIN
+(
+SELECT id AS PersonId, COUNT("Movie.id") AS DirectedMoviesTotal FROM CrewDistinct WHERE job in ('Director') AND "Movie.id" <> '' GROUP BY id
+) AS DirectedTotal
+ON CrewTable.id = DirectedTotal.PersonId
+GROUP BY "Movie.id"
+) AS MostMovies
+
+ON Directors."Movie.id"=MostMovies."Movie.id"
+WHERE MostMovies.DirectorWithMostM=Directors.DirectedMoviesTotal
+GROUP BY Directors."Movie.id"
+;

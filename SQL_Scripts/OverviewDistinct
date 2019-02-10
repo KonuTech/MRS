@@ -1,0 +1,2 @@
+DROP VIEW IF EXISTS OverviewDistinct;
+CREATE VIEW OverviewDistinct AS SELECT DISTINCT * FROM overview WHERE imdb_id <> '' AND overview <> '';

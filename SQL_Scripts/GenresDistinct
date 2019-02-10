@@ -1,0 +1,2 @@
+DROP VIEW IF EXISTS GenresDistinct;
+CREATE VIEW GenresDistinct AS SELECT DISTINCT * FROM genres WHERE imdb_id <> '';

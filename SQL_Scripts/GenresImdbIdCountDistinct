@@ -1,0 +1,2 @@
+DROP VIEW IF EXISTS GenresImdbIdCountDistinct;
+CREATE VIEW GenresImdbIdCountDistinct AS SELECT imdb_id, COUNT(imdb_id) as imdb_idCount FROM GenresDistinct GROUP BY imdb_id ORDER BY imdb_idCount DESC;

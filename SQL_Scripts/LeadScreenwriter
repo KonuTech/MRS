@@ -1,0 +1,44 @@
+DROP VIEW IF EXISTS LeadScreenwriter;
+CREATE VIEW LeadScreenwriter AS
+SELECT DISTINCT
+Writers."Movie.id",
+MIN(Writers.name) as ScreenWriterName,
+Writers.WrittenMoviesTotal
+FROM
+(
+SELECT DISTINCT
+"Movie.id",
+name,
+WrittenMoviesTotal
+FROM
+(
+SELECT * FROM CrewDistinct WHERE job in ('Screenplay') AND "Movie.id" <> ''
+) as CrewTable
+LEFT JOIN
+(
+SELECT id AS PersonId, COUNT("Movie.id") AS WrittenMoviesTotal FROM CrewDistinct WHERE job in ('Screenplay') AND "Movie.id" <> '' GROUP BY id
+) AS WrtittenTotal
+ON CrewTable.id = WrtittenTotal.PersonId
+) AS Writers
+
+LEFT JOIN 
+(
+SELECT DISTINCT
+"Movie.id",
+MAX(WrittenTotal.WrittenMoviesTotal) as WriterWithMostM
+FROM
+(
+SELECT * FROM CrewDistinct WHERE job in ('Screenplay') AND "Movie.id" <> ''
+) as CrewTable
+LEFT JOIN
+(
+SELECT id AS PersonId, COUNT("Movie.id") AS WrittenMoviesTotal FROM CrewDistinct WHERE job in ('Screenplay') AND "Movie.id" <> '' GROUP BY id
+) AS WrittenTotal
+ON CrewTable.id = WrittenTotal.PersonId
+GROUP BY "Movie.id"
+) AS MostMovies
+
+ON Writers."Movie.id" = MostMovies."Movie.id"
+WHERE MostMovies.WriterWithMostM = Writers.WrittenMoviesTotal
+GROUP BY Writers."Movie.id"
+;

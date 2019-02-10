@@ -1,0 +1,4 @@
+DROP VIEW IF EXISTS ScreenwriterMoviesNo;
+CREATE VIEW ScreenwriterMoviesNo AS SELECT DISTINCT id, name, COUNT("Movie.id") AS WrittenMoviesTotal  FROM CrewDistinct WHERE job in ('Screenplay') AND "Movie.id" <> '' GROUP BY id, name ORDER BY WrittenMoviesTotal DESC;
+
+SELECT DISTINCT id, name, COUNT("Movie.id") AS WrittenMoviesTotal  FROM CrewDistinct WHERE job in ('Screenplay') AND "Movie.id" <> '' GROUP BY id, name ORDER BY WrittenMoviesTotal DESC;
