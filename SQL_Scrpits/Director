@@ -1,4 +1,0 @@
-DROP VIEW IF EXISTS DirectorMoviesNo;
-CREATE VIEW DirectorMoviesNo AS SELECT DISTINCT * FROM CrewDistinct WHERE job in ('Director') AND "Movie.id" <> '' ORDER BY name;
-
-SELECT id, name, COUNT("Movie.id") AS DirectedMoviesTotal FROM CrewDistinct WHERE job in ('Director') AND "Movie.id" <> '' GROUP BY id, name ORDER BY DirectedMoviesTotal DESC;
