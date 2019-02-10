@@ -1,2 +1,0 @@
-DROP VIEW IF EXISTS CastThirdActor;
-CREATE VIEW CastThirdActor AS SELECT DISTINCT id, MIN(name) AS name, "Movie.id" FROM CastDistinct WHERE "Movie.order" = 2 GROUP BY "Movie.id" ORDER BY "Movie.id", "Movie.order";
