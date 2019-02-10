@@ -1,2 +1,0 @@
-DROP VIEW IF EXISTS MoviesDistinctSubset;
-CREATE VIEW MoviesDistinctSubset AS SELECT * FROM MoviesDistinct WHERE vote_count > (SELECT vote_count FROM Percentile);
