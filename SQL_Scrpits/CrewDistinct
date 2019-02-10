@@ -1,2 +1,0 @@
-DROP VIEW IF EXISTS CrewDistinct;
-CREATE VIEW CrewDistinct AS SELECT DISTINCT * FROM crew WHERE "Movie.id" <> '';
