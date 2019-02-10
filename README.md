@@ -15,4 +15,4 @@ Although development of classifiers was not expected or even used by recommender
 
 Content Based Recommenders  and Collaborative filtering  are perceived as two major methods for building recommender systems. Although both are used and assessed in the project the combination of the two called Hybrid  method  was not successfuly explored due to lack of data.
 
-Both primary and secondary objectives of the projects are dimed to be succesfully achieved.
+Both primary and secondary objectives of the project are dimed to be achieved.
