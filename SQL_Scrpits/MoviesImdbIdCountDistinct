@@ -1,2 +1,0 @@
-DROP VIEW IF EXISTS MoviesImdbIdCountDistinct;
-CREATE VIEW MoviesImdbIdCountDistinct AS SELECT imdb_id, COUNT(imdb_id) as imdb_idCount FROM MoviesDistinct GROUP BY imdb_id ORDER BY imdb_idCount DESC;
